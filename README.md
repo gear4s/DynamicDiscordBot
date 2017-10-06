@@ -1,5 +1,5 @@
 # DynamicDiscordBot
-A Discord bot inspired by (GuildBot)[https://github.com/JDA-Applications/GuildBot]
+A Discord bot inspired by [GuildBot](https://github.com/JDA-Applications/GuildBot)
 
 # Installing
 > git clone http://github.com/gear4s/DynamicDiscordBot.git
