@@ -1,0 +1,26 @@
+{
+  "name": "dynamicdiscordbot",
+  "version": "1.0.0",
+  "description": "Dynamic Discord Bot, creates commands from channels and messages",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "gear4",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.5.0",
+    "blizzard.js": "^2.0.1",
+    "bufferutil": "^3.0.2",
+    "discord.js": "^11.2.1",
+    "erlpack": "github:hammerandchisel/erlpack",
+    "libsodium-wrappers": "^0.5.4",
+    "libxmljs": "^0.18.7",
+    "node-opus": "^0.2.7",
+    "notevil": "^1.1.0",
+    "opusscript": "0.0.3",
+    "safe-eval": "^0.3.0",
+    "sodium": "^2.0.1",
+    "uws": "^0.14.5",
+    "youtube-node": "^1.3.2"
+  }
+}
