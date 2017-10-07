@@ -4,6 +4,7 @@ const Discord = require("discord.js");
 const clone = require("clone")
 const client = new Discord.Client();
 
+
 process.on('unhandledRejection', (reason) => {
   console.error(reason);
   process.exit(1);
@@ -79,12 +80,16 @@ client.on("message", (msg) => {
         }
 		var cmd = discmd[cmdTxt];
 
-		safeEval(discmd[cmdTxt].callback, {
-			msg: msg,
-			client: client,
-			console: console,
-			requires: clone(discmd[cmdTxt].requires)
-		})
+		try {
+			safeEval(discmd[cmdTxt].callback, {
+				msg: msg,
+				client: client,
+				console: console,
+				requires: clone(discmd[cmdTxt].requires)
+			})
+		} catch(e) {
+			msg.reply("unfortunately, the developer that made that specific command made a mistake! Please contact him for assistance :)")
+		}
 	}
 });
 client.on("messageUpdate", (oldMessage, newMessage) => {
