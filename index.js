@@ -66,10 +66,10 @@ client.on("disconnected", () => {
 client.on("message", (msg) => {
   //check if message is a command
   if(msg.author.id != client.user.id && (msg.content.startsWith("!"))) {
-        console.log("treating " + msg.content + " from " + msg.author + " as command");
+    console.log("treating " + msg.content + " from " + msg.author + " as command");
     var cmdTxt = msg.content.split(" ")[0].substring(1);
-        var suffix = msg.content.substring(cmdTxt.length+2);//add one for the ! and one for the space
-        if(msg.isMentioned(client.user)){
+    var suffix = msg.content.substring(cmdTxt.length+2);//add one for the ! and one for the space
+    if(msg.isMentioned(client.user)){
       try {
         cmdTxt = msg.content.split(" ")[1];
         suffix = msg.content.substring(client.user.mention().length+cmdTxt.length+2);
@@ -77,7 +77,7 @@ client.on("message", (msg) => {
         msg.channel.send("Yes?");
         return;
       }
-        }
+    }
     var cmd = discmd[cmdTxt];
 
     try {
