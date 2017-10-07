@@ -1,8 +1,8 @@
 const blizzard = require('blizzard.js').initialize({ apikey: 'api-key' });
 const safeEval = require('notevil')
 const Discord = require("discord.js");
+const clone = require("clone")
 const client = new Discord.Client();
-
 
 process.on('unhandledRejection', (reason) => {
   console.error(reason);
@@ -82,7 +82,8 @@ client.on("message", (msg) => {
 		safeEval(discmd[cmdTxt].callback, {
 			msg: msg,
 			client: client,
-			requires: discmd[cmdTxt].requires
+			console: console,
+			requires: clone(discmd[cmdTxt].requires)
 		})
 	}
 });
