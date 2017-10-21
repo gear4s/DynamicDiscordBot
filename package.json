@@ -18,6 +18,7 @@
     "node-opus": "^0.2.7",
     "notevil": "^1.1.0",
     "opusscript": "0.0.3",
+    "request": "^2.83.0",
     "safe-eval": "^0.3.0",
     "sodium": "^2.0.1",
     "uws": "^0.14.5",
