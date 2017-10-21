@@ -68,6 +68,30 @@ client.on("ready", () => {
                     })
                   } break;
 
+                case "globinc":
+                  {
+                    var cmd = chan[1]
+                    if(!discmd[cmd]) discmd[cmd] = {functions: [], requires: {}}
+                    console.log(`Received ${msgs.size} messages from ${chan.join('-')}`)
+                    messages[0].content.split("\n").forEach(function(msg) {
+                      var code = msg.split(":")
+                      if(typeof code[1] == "undefined") {
+                        // name is same as require
+                        code[1] = code[0]
+                      }
+                      if(typeof includes.mod[code[1]] == "undefined") {
+                        console.log("New global module required: " + code[1])
+                        includes.mod[code[1]] = (new Function(`return ${code[1]}`))()
+                      }
+                      if(typeof includes.cmd[cmd] == "undefined") {
+                        console.log("Loaded new global module reference table for command:", cmd)
+                        includes.cmd[cmd] = {}
+                      }
+                      console.log("New command global module referenced:", code[1])
+                      includes.cmd[cmd][code[0]] = includes.mod[code[1]]
+                    })
+                  } break;
+
                 case "func":
                   {
                     var cmd = chan[1]
