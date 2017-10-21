@@ -48,9 +48,12 @@ client.on("ready", () => {
                     var cmd = chan[1]
                     if(!discmd[cmd]) discmd[cmd] = {functions: [], requires: {}}
                     console.log(`Received ${msgs.size} messages from ${chan.join('-')}`)
-                    var msg = messages[0].content.split("\n")
-                    for(var i in msg) {
-                      var code = msg[i].split(":")
+                    messages[0].content.split("\n").forEach(function(msg) {
+                      var code = msg.split(":")
+                      if(typeof code[1] == "undefined") {
+                        // name is same as require
+                        code[1] = code[0]
+                      }
                       if(typeof includes.mod[code[1]] == "undefined") {
                         console.log("New module required: " + code[1])
                         includes.mod[code[1]] = require(code[1])
@@ -62,7 +65,7 @@ client.on("ready", () => {
                       console.log("New command module referenced:", code[1])
                       includes.cmd[cmd][code[0]] = includes.mod[code[1]]
                       console.log(typeof includes.cmd[cmd][code[0]], cmd, code[0], code[1])
-                    }
+                    })
                   } break;
 
                 case "func":
