@@ -34,8 +34,8 @@ client.on("ready", () => {
                 case "cmd":
                   {
                     var cmd = chan[1]
-                    if(!discmd[cmd]) discmd[cmd] = {}
-                    console.log(`Received ${msgs.size} messages`)
+                    if(!discmd[cmd]) discmd[cmd] = {functions: [], requires: {}}
+                    console.log(`Received ${msgs.size} messages from ${chan.join('-')}`)
                     var i = messages.length
                     while(i--) {
                       var msg = messages[i].content.split("```")
@@ -46,8 +46,8 @@ client.on("ready", () => {
                 case "inc":
                   {
                     var cmd = chan[1]
-                    if(!discmd[cmd]) discmd[cmd] = {requires: {}}
-                    console.log(`Received ${msgs.size} messages`)
+                    if(!discmd[cmd]) discmd[cmd] = {functions: [], requires: {}}
+                    console.log(`Received ${msgs.size} messages from ${chan.join('-')}`)
                     var msg = messages[0].content.split("\n")
                     for(var i in msg) {
                       var code = msg[i].split(":")
@@ -62,6 +62,18 @@ client.on("ready", () => {
                       console.log("New command module referenced:", code[1])
                       includes.cmd[cmd][code[0]] = includes.mod[code[1]]
                       console.log(typeof includes.cmd[cmd][code[0]], cmd, code[0], code[1])
+                    }
+                  } break;
+
+                case "func":
+                  {
+                    var cmd = chan[1]
+                    console.log(`Received ${msgs.size} messages from ${chan.join('-')}`)
+                    if(!discmd[cmd]) discmd[cmd] = {functions: [], requires: {}}
+                    var i = messages.length
+                    while(i--) {
+                      var msg = messages[i].content.split("```")
+                      discmd[cmd].functions.push(msg[1].substring(11))
                     }
                   } break;
 
@@ -103,20 +115,25 @@ client.on("message", (msg) => {
           return;
         }
       }
-      var cmd = discmd[cmdTxt];
 
+      var cmd = discmd[cmdTxt];
       if(cmd) {
         try {
           msg.__rep = msg.reply
           msg.reply = function(txt) {
             this.__rep(txt).then(msg => console.log(`Sent message to ${msg.author}: ${txt}`)).catch(console.error)
           }
-          console.log(includes.cmd[cmdTxt])
-          safeEval(discmd[cmdTxt].callback, {
+
+          const cb = discmd[cmdTxt].functions.join("\n") + discmd[cmdTxt].callback
+          console.log(cb)
+          safeEval(cb, {
             msg: msg,
             client: client,
             console: console,
             discordapi: Discord,
+            JSON: JSON,
+            parseInt: parseInt,
+            Math: Math,
             requires: clone(includes.cmd[cmdTxt])
           })
         } catch(e) {
@@ -129,4 +146,5 @@ client.on("message", (msg) => {
 });
 client.on("messageUpdate", (oldMessage, newMessage) => {
 });
+
 client.login('your.api-key');
